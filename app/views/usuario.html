@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aplicación de Usuario</title>
+  <link rel="stylesheet" href="../../recursos/bootstrap.min.css" />
+</head>
+<body class="bg-light">
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Formulario de Aplicación</h5>
+          </div>
+          <div class="card-body">
+            <form id="formUsuario" novalidate>
+
+              <!-- Nombre Completo -->
+              <div class="mb-3">
+                <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombreCompleto"
+                  placeholder="Ej. Juan Pérez García"
+                  required
+                />
+                <div class="invalid-feedback">Por favor ingrese su nombre completo.</div>
+              </div>
+
+              <!-- Edad -->
+              <div class="mb-3">
+                <label for="edad" class="form-label">Edad</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="edad"
+                  placeholder="Ej. 25"
+                  min="18"
+                  max="99"
+                  required
+                />
+                <div class="invalid-feedback">Por favor ingrese una edad válida (18-99).</div>
+              </div>
+
+              <!-- Sueldo Pretendido -->
+              <div class="mb-4">
+                <label for="sueldoPretendido" class="form-label">Sueldo Pretendido</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="sueldoPretendido"
+                    placeholder="Ej. 15000.00"
+                    min="0"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div class="invalid-feedback d-block" id="sueldoError" style="display:none !important;"></div>
+              </div>
+
+              <!-- Botón -->
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                  Procesar Aplicación
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../recursos/bootstrap.bundle.min.js"></script>
+  <script>
+    const form = document.getElementById('formUsuario');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Validación de sueldo manualmente (input-group no activa :invalid por CSS fácilmente)
+      const sueldo = document.getElementById('sueldoPretendido');
+      const sueldoError = document.getElementById('sueldoError');
+
+      if (!sueldo.value || parseFloat(sueldo.value) < 0) {
+        sueldoError.textContent = 'Por favor ingrese un sueldo válido.';
+        sueldoError.style.display = 'block';
+        sueldo.classList.add('is-invalid');
+      } else {
+        sueldoError.style.display = 'none';
+        sueldo.classList.remove('is-invalid');
+      }
+
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      form.classList.add('was-validated');
+
+      const datos = {
+        nombre: document.getElementById('nombreCompleto').value,
+        edad: document.getElementById('edad').value,
+        sueldo: parseFloat(sueldo.value).toFixed(2)
+      };
+
+      console.log('Datos de aplicación:', datos);
+      alert(`Aplicación procesada para: ${datos.nombre}`);
+    });
+  </script>
+
+</body>
+</html>
