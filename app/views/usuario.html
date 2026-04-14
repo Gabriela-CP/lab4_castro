@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aplicación de Usuario</title>
   <link rel="stylesheet" href="../../recursos/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../recursos/sweetalert2.min.css" />
   <link rel="stylesheet" href="../../recursos/inter-font.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -191,33 +192,6 @@
       vertical-align: middle;
     }
 
-    /* Toast de éxito */
-    .toast-success {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: linear-gradient(135deg, #065f46, #047857);
-      color: #fff;
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.3s, transform 0.3s;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    .toast-success.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* Número de campo */
     .field-step {
       display: inline-flex;
@@ -310,7 +284,7 @@
         <hr class="form-divider" />
 
         <!-- Botón -->
-        <button type="submit" class="btn-procesar">
+        <button type="submit" class="btn-procesar" id="btnProcesar">
           <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="9 11 12 14 22 4"/>
@@ -324,81 +298,8 @@
 
   </div>
 
-  <!-- Toast notificación -->
-  <div class="toast-success" id="toastExito">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-      <polyline points="22 4 12 14.01 9 11.01"/>
-    </svg>
-    <span id="toastMsg">Aplicación procesada correctamente.</span>
-  </div>
-
   <script src="../../recursos/bootstrap.bundle.min.js"></script>
-  <script>
-    const form = document.getElementById('formUsuario');
-
-    // Validación en tiempo real
-    ['nombreCompleto', 'edad', 'sueldoPretendido'].forEach(id => {
-      document.getElementById(id).addEventListener('input', function () {
-        if (form.classList.contains('was-validated')) {
-          validateField(this);
-        }
-      });
-    });
-
-    function validateField(input) {
-      if (input.checkValidity()) {
-        input.classList.remove('is-invalid');
-        input.classList.add('is-valid');
-      } else {
-        input.classList.remove('is-valid');
-        input.classList.add('is-invalid');
-      }
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      form.classList.add('was-validated');
-
-      const sueldo = document.getElementById('sueldoPretendido');
-      const sueldoError = document.getElementById('sueldoError');
-
-      // Validar sueldo manualmente (input-group)
-      if (!sueldo.value || parseFloat(sueldo.value) < 0) {
-        sueldoError.textContent = 'Ingrese un sueldo válido mayor o igual a 0.';
-        sueldo.classList.add('is-invalid');
-        sueldo.classList.remove('is-valid');
-      } else {
-        sueldoError.textContent = '';
-        sueldo.classList.remove('is-invalid');
-        sueldo.classList.add('is-valid');
-      }
-
-      // Validar todos los campos
-      const campos = form.querySelectorAll('input');
-      let valido = true;
-      campos.forEach(c => {
-        validateField(c);
-        if (!c.checkValidity()) valido = false;
-      });
-
-      if (!valido || sueldoError.textContent) return;
-
-      const nombre = document.getElementById('nombreCompleto').value.trim();
-      mostrarToast(`Aplicación de ${nombre} procesada correctamente.`);
-      form.reset();
-      form.classList.remove('was-validated');
-      campos.forEach(c => { c.classList.remove('is-valid', 'is-invalid'); });
-    });
-
-    function mostrarToast(msg) {
-      const toast = document.getElementById('toastExito');
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3500);
-    }
-  </script>
-
+  <script src="../../recursos/sweetalert2.min.js"></script>
+  <script src="../controlles/usuario.js"></script>
 </body>
 </html>
