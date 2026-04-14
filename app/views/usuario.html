@@ -5,117 +5,399 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aplicación de Usuario</title>
   <link rel="stylesheet" href="../../recursos/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../recursos/inter-font.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 2rem 1rem;
+    }
+
+    .form-wrapper {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Encabezado superior */
+    .form-brand {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-brand .brand-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+    }
+
+    .form-brand .brand-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+    }
+
+    .form-brand h1 {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .form-brand p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.875rem;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    /* Tarjeta */
+    .form-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Labels */
+    .form-label {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Inputs */
+    .form-control {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 400;
+      padding: 0.75rem 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+
+    .form-control:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+      color: #fff;
+      outline: none;
+    }
+
+    .form-control.is-invalid {
+      border-color: #f87171;
+      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2);
+    }
+
+    .form-control.is-valid {
+      border-color: #34d399;
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+    }
+
+    /* Input group (sueldo) */
+    .input-group .input-group-text {
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      color: #a5b4fc;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 0.75rem 1rem;
+    }
+
+    .input-group .form-control {
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .input-group .form-control:focus {
+      border-left: none;
+    }
+
+    /* Feedback */
+    .invalid-feedback, .field-error {
+      color: #f87171;
+      font-size: 0.78rem;
+      margin-top: 0.4rem;
+      font-weight: 400;
+    }
+
+    /* Separador */
+    .form-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin: 1.75rem 0;
+    }
+
+    /* Botón */
+    .btn-procesar {
+      width: 100%;
+      padding: 0.875rem;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(79, 70, 229, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-procesar:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(79, 70, 229, 0.55);
+    }
+
+    .btn-procesar:active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .btn-procesar .btn-icon {
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* Toast de éxito */
+    .toast-success {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: linear-gradient(135deg, #065f46, #047857);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .toast-success.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Número de campo */
+    .field-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: rgba(79, 70, 229, 0.3);
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #a5b4fc;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
-  <div class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
+  <div class="form-wrapper">
 
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Formulario de Aplicación</h5>
-          </div>
-          <div class="card-body">
-            <form id="formUsuario" novalidate>
+    <!-- Marca / encabezado -->
+    <div class="form-brand">
+      <div class="brand-icon">
+        <!-- Ícono persona -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+        </svg>
+      </div>
+      <h1>Aplicación de Empleo</h1>
+      <p>Complete el formulario para procesar su solicitud</p>
+    </div>
 
-              <!-- Nombre Completo -->
-              <div class="mb-3">
-                <label for="nombreCompleto" class="form-label">Nombre Completo</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nombreCompleto"
-                  placeholder="Ej. Juan Pérez García"
-                  required
-                />
-                <div class="invalid-feedback">Por favor ingrese su nombre completo.</div>
-              </div>
+    <!-- Tarjeta del formulario -->
+    <div class="form-card">
+      <form id="formUsuario" novalidate autocomplete="off">
 
-              <!-- Edad -->
-              <div class="mb-3">
-                <label for="edad" class="form-label">Edad</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="edad"
-                  placeholder="Ej. 25"
-                  min="18"
-                  max="99"
-                  required
-                />
-                <div class="invalid-feedback">Por favor ingrese una edad válida (18-99).</div>
-              </div>
-
-              <!-- Sueldo Pretendido -->
-              <div class="mb-4">
-                <label for="sueldoPretendido" class="form-label">Sueldo Pretendido</label>
-                <div class="input-group">
-                  <span class="input-group-text">$</span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="sueldoPretendido"
-                    placeholder="Ej. 15000.00"
-                    min="0"
-                    step="0.01"
-                    required
-                  />
-                </div>
-                <div class="invalid-feedback d-block" id="sueldoError" style="display:none !important;"></div>
-              </div>
-
-              <!-- Botón -->
-              <div class="d-grid">
-                <button type="submit" class="btn btn-primary">
-                  Procesar Aplicación
-                </button>
-              </div>
-
-            </form>
-          </div>
+        <!-- Nombre Completo -->
+        <div class="mb-4">
+          <label for="nombreCompleto" class="form-label">
+            <span class="field-step">1</span>Nombre Completo
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="nombreCompleto"
+            placeholder="Ej. Juan Pérez García"
+            required
+          />
+          <div class="invalid-feedback">Ingrese su nombre completo.</div>
         </div>
 
-      </div>
+        <!-- Edad -->
+        <div class="mb-4">
+          <label for="edad" class="form-label">
+            <span class="field-step">2</span>Edad
+          </label>
+          <input
+            type="number"
+            class="form-control"
+            id="edad"
+            placeholder="Ej. 25"
+            min="18"
+            max="99"
+            required
+          />
+          <div class="invalid-feedback">Ingrese una edad válida entre 18 y 99 años.</div>
+        </div>
+
+        <!-- Sueldo Pretendido -->
+        <div class="mb-4">
+          <label for="sueldoPretendido" class="form-label">
+            <span class="field-step">3</span>Sueldo Pretendido
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input
+              type="number"
+              class="form-control"
+              id="sueldoPretendido"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+          <div class="field-error" id="sueldoError"></div>
+        </div>
+
+        <hr class="form-divider" />
+
+        <!-- Botón -->
+        <button type="submit" class="btn-procesar">
+          <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          Procesar Aplicación
+        </button>
+
+      </form>
     </div>
+
+  </div>
+
+  <!-- Toast notificación -->
+  <div class="toast-success" id="toastExito">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span id="toastMsg">Aplicación procesada correctamente.</span>
   </div>
 
   <script src="../../recursos/bootstrap.bundle.min.js"></script>
   <script>
     const form = document.getElementById('formUsuario');
 
+    // Validación en tiempo real
+    ['nombreCompleto', 'edad', 'sueldoPretendido'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function () {
+        if (form.classList.contains('was-validated')) {
+          validateField(this);
+        }
+      });
+    });
+
+    function validateField(input) {
+      if (input.checkValidity()) {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+      } else {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+      }
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      form.classList.add('was-validated');
 
-      // Validación de sueldo manualmente (input-group no activa :invalid por CSS fácilmente)
       const sueldo = document.getElementById('sueldoPretendido');
       const sueldoError = document.getElementById('sueldoError');
 
+      // Validar sueldo manualmente (input-group)
       if (!sueldo.value || parseFloat(sueldo.value) < 0) {
-        sueldoError.textContent = 'Por favor ingrese un sueldo válido.';
-        sueldoError.style.display = 'block';
+        sueldoError.textContent = 'Ingrese un sueldo válido mayor o igual a 0.';
         sueldo.classList.add('is-invalid');
+        sueldo.classList.remove('is-valid');
       } else {
-        sueldoError.style.display = 'none';
+        sueldoError.textContent = '';
         sueldo.classList.remove('is-invalid');
+        sueldo.classList.add('is-valid');
       }
 
-      if (!form.checkValidity()) {
-        form.classList.add('was-validated');
-        return;
-      }
+      // Validar todos los campos
+      const campos = form.querySelectorAll('input');
+      let valido = true;
+      campos.forEach(c => {
+        validateField(c);
+        if (!c.checkValidity()) valido = false;
+      });
 
-      form.classList.add('was-validated');
+      if (!valido || sueldoError.textContent) return;
 
-      const datos = {
-        nombre: document.getElementById('nombreCompleto').value,
-        edad: document.getElementById('edad').value,
-        sueldo: parseFloat(sueldo.value).toFixed(2)
-      };
-
-      console.log('Datos de aplicación:', datos);
-      alert(`Aplicación procesada para: ${datos.nombre}`);
+      const nombre = document.getElementById('nombreCompleto').value.trim();
+      mostrarToast(`Aplicación de ${nombre} procesada correctamente.`);
+      form.reset();
+      form.classList.remove('was-validated');
+      campos.forEach(c => { c.classList.remove('is-valid', 'is-invalid'); });
     });
+
+    function mostrarToast(msg) {
+      const toast = document.getElementById('toastExito');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
   </script>
 
 </body>
