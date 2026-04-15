@@ -38,28 +38,13 @@ $cumpleEdad   = $edadInt >= 18;
 $cumpleSueldo = $sueldoNeto > 450.00;
 
 if ($cumpleEdad && $cumpleSueldo) {
-    // Aprobado
     echo json_encode([
         'status'  => true,
-        'mensaje' => "Perfil APROBADO. Bienvenido/a, $nombreFmt. " .
-                     "Sueldo bruto: $" . number_format($sueldoBruto, 2) . " | " .
-                     "Renta (10%): $" . number_format($renta, 2) . " | " .
-                     "Sueldo neto: $" . number_format($sueldoNeto, 2) . "."
+        'mensaje' => "Felicidades $nombreFmt, su perfil es apto. Su sueldo neto tras impuestos será de $" . number_format($sueldoNeto, 2) . "."
     ]);
 } else {
-    // Rechazado — indicar motivo específico
-    $motivos = [];
-
-    if (!$cumpleEdad) {
-        $motivos[] = "edad insuficiente ($edadInt años, mínimo 18)";
-    }
-
-    if (!$cumpleSueldo) {
-        $motivos[] = "sueldo neto insuficiente ($" . number_format($sueldoNeto, 2) . ", mínimo \$450.01)";
-    }
-
     echo json_encode([
         'status'  => false,
-        'mensaje' => "Perfil RECHAZADO para $nombreFmt. Motivo(s): " . implode(' y ', $motivos) . "."
+        'mensaje' => "Solicitud rechazada. El perfil no cumple con los criterios mínimos de edad o ingresos (Ingreso calculado: $" . number_format($sueldoNeto, 2) . ")."
     ]);
 }
