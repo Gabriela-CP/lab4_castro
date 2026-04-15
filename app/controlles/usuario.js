@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Submit → AJAX
+  
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     form.classList.add('was-validated');
 
-    // Validar sueldo (dentro de input-group, Bootstrap no lo marca solo)
+    
     const sueldoInput = document.getElementById('sueldoPretendido');
     const sueldoError = document.getElementById('sueldoError');
     const sueldoValido = sueldoInput.value !== '' && parseFloat(sueldoInput.value) >= 0;
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sueldoInput.classList.add('is-valid');
     }
 
-    // Validar todos los campos
+    
     let formValido = true;
     form.querySelectorAll('input').forEach(c => {
       validateField(c);
@@ -51,20 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!formValido || !sueldoValido) return;
 
-    // Recolectar datos
+    
     const datos = new FormData();
     datos.append('nombre', document.getElementById('nombreCompleto').value.trim());
     datos.append('edad',   document.getElementById('edad').value);
     datos.append('sueldo', parseFloat(sueldoInput.value).toFixed(2));
 
-    // Estado de carga en el botón
+    
     btnProcesar.disabled = true;
     btnProcesar.innerHTML = `
       <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
       Procesando...
     `;
 
-    // Petición AJAX
+    
     fetch('../modelo/usuario.php', {
       method: 'POST',
       body: datos
@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
           title: '¡Aplicación Procesada!',
           text: json.mensaje,
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#4f46e5',
-          background: '#1e1b4b',
+          confirmButtonColor: '#FF7A2A',
+          background: '#0B1020',
           color: '#e0e7ff',
           iconColor: '#34d399'
         });
@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
           title: 'Solicitud Rechazada',
           text: json.mensaje,
           confirmButtonText: 'Corregir',
-          confirmButtonColor: '#dc2626',
-          background: '#1e1b4b',
+          confirmButtonColor: '#4A6ED1',
+          background: '#0B1020',
           color: '#e0e7ff',
           iconColor: '#f87171'
         });
@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Error de Conexión',
         text: 'No se pudo conectar con el servidor. Intente nuevamente.',
         confirmButtonText: 'Cerrar',
-        confirmButtonColor: '#dc2626',
-        background: '#1e1b4b',
+        confirmButtonColor: '#4A6ED1',
+        background: '#0B1020',
         color: '#e0e7ff'
       });
       console.error(err);

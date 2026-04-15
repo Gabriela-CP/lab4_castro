@@ -2,12 +2,12 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// --- Recibir datos POST ---
+
 $nombre = trim($_POST['nombre'] ?? '');
 $edad   = $_POST['edad']   ?? '';
 $sueldo = $_POST['sueldo'] ?? '';
 
-// --- Validaciones de entrada ---
+
 if (empty($nombre)) {
     echo json_encode(['status' => false, 'mensaje' => 'El nombre completo es obligatorio.']);
     exit;
@@ -25,7 +25,7 @@ if (!is_numeric($sueldo) || (float)$sueldo < 0) {
 
 // --- Procesamiento lógico-matemático ---
 
-// 1. Cálculo de Renta: descuento del 10%
+
 $sueldoBruto  = (float)$sueldo;
 $renta        = $sueldoBruto * 0.10;
 $sueldoNeto   = $sueldoBruto - $renta;
@@ -33,7 +33,7 @@ $sueldoNeto   = $sueldoBruto - $renta;
 $edadInt      = (int)$edad;
 $nombreFmt    = htmlspecialchars($nombre);
 
-// 2. Evaluación de Perfil
+
 $cumpleEdad   = $edadInt >= 18;
 $cumpleSueldo = $sueldoNeto > 450.00;
 
